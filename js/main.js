@@ -18,14 +18,14 @@ $(document).ready(function(){
 	var problemType = '-1';
 	var problemId = 0;
 	var setId = -1;
-	var changshiSet = new ProblemSet(1, 'changshi', 900, true, '常识判断', '根据题目要求，在四个选项中选出一个最恰当的答案', 20);
-	var panduanSet = new ProblemSet(2, 'panduan', 35*60, true, '判断推理', '请按每道题的答题要求作答', 40);
-	var shuliangSet = new ProblemSet(3, 'shuliang', 900, true, '数量关系', '在这部分试题中，每道题呈现一段表述数字关系的文字，要求你迅速、准确地计算出答案', 15);
-	var yanyuSet = new ProblemSet(4, 'yanyu', 35*60, true, ' 言语理解与表达', '本部分包括表达与理解两方面的内容。请根据题目要求，在四个选项中选出一个最恰当的答案', 40);
-	var ziliaoSet = new ProblemSet(5, 'ziliao', 1200, true, '资料分析', '所给出的图、表、文字或综合性资料均有若干个问题要你回答。你应根据资料提供的信息进行分析、比较、计算和判断处理', 20);
+	var changshiSet = new ProblemSet(1, 'changshi', 900, true, '常识判断', '根据题目要求，在四个选项中选出一个最恰当的答案', 20, 60);
+	var panduanSet = new ProblemSet(2, 'panduan', 35*60, true, '判断推理', '请按每道题的答题要求作答', 40, 112);
+	var shuliangSet = new ProblemSet(3, 'shuliang', 900, true, '数量关系', '在这部分试题中，每道题呈现一段表述数字关系的文字，要求你迅速、准确地计算出答案', 15, 55);
+	var yanyuSet = new ProblemSet(4, 'yanyu', 35*60, true, ' 言语理解与表达', '本部分包括表达与理解两方面的内容。请根据题目要求，在四个选项中选出一个最恰当的答案', 40, 120);
+	var ziliaoSet = new ProblemSet(5, 'ziliao', 1200, true, '资料分析', '所给出的图、表、文字或综合性资料均有若干个问题要你回答。你应根据资料提供的信息进行分析、比较、计算和判断处理', 20, 60);
 	var partTimer;
 
-	function ProblemSet(id, type, limitTime, status, title, titleIntro, count) {
+	function ProblemSet(id, type, limitTime, status, title, titleIntro, count, all) {
 
 		this.id = id;
 		this.type = type;
@@ -35,6 +35,7 @@ $(document).ready(function(){
 		this.title = title;
 		this.titleIntro = titleIntro;
 		this.count = count;
+		this.all = all;
 
 	}
 
@@ -286,7 +287,7 @@ $(document).ready(function(){
 		if(set.type == 'ziliao') {
 			console.log(problems);
 			var _count = set.count / 5;
-			var temp_count = set.count / 5;
+			var temp_count = set.all / 5;
 			var _id = 0;
 			var flag = new Array(100);
 			var rand;
@@ -308,9 +309,9 @@ $(document).ready(function(){
 			var flag = new Array(100);
 			var rand;
 			while(_count--) {
-				rand = parseInt(Math.random() * set.count);
+				rand = parseInt(Math.random() * set.all);
 				while(flag[rand] === true) {
-					rand = parseInt(Math.random() * set.count);
+					rand = parseInt(Math.random() * set.all);
 				}
 				flag[rand] = true;
 				var _problem = new Problem(problems[rand].id, problems[rand].content, true, problems[rand].ans, problems[rand].opt, problems[rand].sAns, problems[rand].type, false, problems[rand].title, problems[rand].titleId);
@@ -407,7 +408,7 @@ $(document).ready(function(){
 			var _img = new Image();
 			var _src = 'images/' + _set.id + '-' + _problem.titleId + '.png';
 			_img.src = _src;
-			$(_img).css({'vertical-align': 'top', 'margin-left': '70px'});
+			$(_img).css({'vertical-align': 'top', 'margin-left': '70px', 'max-height': '600px'});
 			$('.problem-content').prepend(_img);
 			var _content = $('<p></p>');
 			_content.html(_problem.title);
